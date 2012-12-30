@@ -128,6 +128,10 @@ function Graph() {
       'active': node['active'],
       'hidden': node['hidden'],
       'forceLabel': node['forceLabel'],
+      'leftSideColor': node['leftSideColor'],
+      'rightSideColor': node['rightSideColor'],
+      'borderColor': node['borderColor'],
+      'borderSize': node['borderSize'],
       'attr': node['attr']
     };
   };
@@ -156,6 +160,7 @@ function Graph() {
         case 'x':
         case 'y':
         case 'size':
+        case 'borderSize':
           node[k] = +copy[k];
           break;
         case 'fixed':
@@ -165,6 +170,9 @@ function Graph() {
           node[k] = !!copy[k];
           break;
         case 'color':
+        case 'leftSideColor':
+        case 'rightSideColor':
+        case 'borderColor':
         case 'label':
           node[k] = (copy[k] || '').toString();
           break;

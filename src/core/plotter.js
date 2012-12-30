@@ -280,17 +280,75 @@ function Plotter(nodesCtx, edgesCtx, labelsCtx, hoverCtx, graph, w, h) {
     var size = Math.round(node['displaySize'] * 10) / 10;
     var ctx = nodesCtx;
 
-    ctx.fillStyle = node['color'];
-    ctx.beginPath();
-    ctx.arc(node['displayX'],
-            node['displayY'],
-            size,
-            0,
-            Math.PI * 2,
-            true);
 
-    ctx.closePath();
-    ctx.fill();
+    if (node['borderColor'])
+    {
+      var scale = node['displaySize'] / node['size'];
+      var borderSize = node['borderSize'] ? node['borderSize'] : 1;
+      borderSize *= scale;
+      ctx.fillStyle = node['borderColor'];
+      ctx.beginPath();
+      ctx.arc(node['displayX'],
+              node['displayY'],
+              size + borderSize,
+              0,
+              Math.PI * 2,
+              true);
+     
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    if (node['leftSideColor'] || node['rightSideColor']) {
+        ctx.fillStyle = node['leftSideColor'] || node['color'];
+        ctx.beginPath();
+        ctx.arc(node['displayX'],
+                node['displayY'],
+                size,
+               -Math.PI / 2,
+                Math.PI / 2,
+                true);
+
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = node['rightSideColor'] || node['color'];
+        ctx.beginPath();
+        ctx.arc(node['displayX'],
+                node['displayY'],
+                size,
+                Math.PI / 2,
+               -Math.PI / 2,
+                true);
+
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = node['color'];
+        ctx.beginPath();
+
+        ctx.arc(node['displayX'],
+                node['displayY'],
+                size,
+                0,
+                Math.PI * 2,
+                true);
+
+        ctx.closePath();
+        ctx.stroke();
+    } else {
+        ctx.fillStyle = node['color'];
+        ctx.beginPath();
+        ctx.arc(node['displayX'],
+                node['displayY'],
+                size,
+                0,
+                Math.PI * 2,
+                true);
+
+        ctx.closePath();
+        ctx.fill();
+    }
 
     node['hover'] && drawHoverNode(node);
     return self;
