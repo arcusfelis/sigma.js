@@ -33,9 +33,11 @@ sigma.publicPrototype.parseGexf = function(gexfPath) {
           title = attributeNode.getAttribute('title'),
           type = attributeNode.getAttribute('type');
         
-        var attribute = {title:title, type:type, is_array: /\[\]$/.test(title)};
+        var is_array = /\[\]$/.test(title);
+        if (is_array)
+          title = title.substr(0, title.length-2);
+        var attribute = {title:title, type:type, is_array: is_array};
         nodesAttributes[id] = attribute;
-        
       }
     } else if(attributesNode.getAttribute('class') == 'edge'){
       var attributeNodes = attributesNode.getElementsByTagName('attribute');  // The list of xml nodes 'attribute' (no 's')
