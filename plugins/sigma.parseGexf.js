@@ -33,7 +33,7 @@ sigma.publicPrototype.parseGexf = function(gexfPath) {
           title = attributeNode.getAttribute('title'),
           type = attributeNode.getAttribute('type');
         
-        var attribute = {title:title, type:type};
+        var attribute = {title:title, type:type, is_array: /\[\]$/.test(title)};
         nodesAttributes[id] = attribute;
         
       }
@@ -113,7 +113,24 @@ sigma.publicPrototype.parseGexf = function(gexfPath) {
         var attr = attvalueNode.getAttribute('for');
         var val = attvalueNode.getAttribute('value');
         if (nodesAttributes[attr])
-            attr = nodesAttributes[attr].title;
+        {
+            if (nodesAttributes[attr].is_array)
+            {
+                attr = nodesAttributes[attr].title;
+
+                // Init, if undefined.
+                if (!node[attr])
+                    node[attr] = [];
+
+                node[attr].push(val);
+            }
+            else
+            {
+                attr = nodesAttributes[attr].title;
+                node[attr] = val;
+            }
+        }
+        else
         node[attr] = val;
       }
 
